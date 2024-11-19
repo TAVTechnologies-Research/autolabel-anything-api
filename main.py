@@ -1,6 +1,9 @@
 import os
 import json
 import dotenv
+from numpy import isin
+
+from db.redis_client import RedisClient
 
 dotenv.load_dotenv(".env.general")
 print(f"ENVIRONMENT: {os.environ.get('MAX_SAM2_MODEL_INSTANCES')}")
@@ -10,7 +13,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import Response, StreamingResponse
 
 import database_models as dbmodels
-from db import Base, engine, get_db
+from db import Base, engine, get_db, get_redis_client
 from app import CustomHTTPException
 from app import video_router, ai_model_router, files_router, frames_router, task_router
 from settings import settings
@@ -35,7 +38,7 @@ from fastapi.responses import JSONResponse
 ##            print(f"Request: {request.url.path}")
 ##            # Process the request and get the response
 ##            response = await call_next(request)
-##            
+##
 ##            if response.headers.get("X-Stream", "false") == "true":
 ##                return response
 ##
@@ -81,6 +84,7 @@ from fastapi.responses import JSONResponse
 ##            return JSONResponse(status_code=500, content=wrapped_response.dict())
 ##
 
+
 def init_folder_structure() -> None:
     os.makedirs(settings.DATA_DIRECTORY, exist_ok=True)
     os.makedirs(settings.RAW_VIDEO_DIRECTORY, exist_ok=True)
@@ -88,14 +92,40 @@ def init_folder_structure() -> None:
     os.makedirs(settings.EXTRACTED_FRAMES_DIRECTORY, exist_ok=True)
 
 
+def init_redis_structure() -> None:
+    rcli = get_redis_client()
+    if not isinstance(rcli, RedisClient):
+        raise RuntimeError("Error connecting to redis")
+    # create stream
+    # rcli.stream_add(settings.REDIS_MANAGER_STREAM_NAME, {"data": ""})
+    pub_id = rcli.client.xadd(settings.REDIS_MANAGER_STREAM_NAME, {"data": ""})
+    print(f"Stream created: {pub_id}")
+    # remove dummy message
+    rcli.client.xdel(settings.REDIS_MANAGER_STREAM_NAME, pub_id)
+    # create a consumer group
+    try:
+        rcli.client.xgroup_create(
+            name=settings.REDIS_MANAGER_STREAM_NAME,
+            groupname="main",
+            id="0",
+            mkstream=True,
+        )
+    except Exception as e:
+        print(f"Error creating consumer group: {e}")
+        
+
+
+
 init_folder_structure()
 Base.metadata.create_all(bind=engine)
+init_redis_structure()
 
 app = FastAPI(
     debug=True,
     title="Segment Anything API",
 )
-#app.add_middleware(ResponseWrapperMiddleware)
+# app.add_middleware(ResponseWrapperMiddleware)
+
 
 @app.exception_handler(CustomHTTPException)
 async def custom_http_exception_handler(request: Request, exc: CustomHTTPException):
