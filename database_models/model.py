@@ -21,28 +21,28 @@ class AiModel(Base):
 
 DEFAULT_MODELS = [
     {
-        "model_name": "Hiera Base Plus",
+        "ai_model_name": "Hiera Base Plus",
         "checkpoint_path": os.path.join(
             settings.MODEL_CHECKPOINT_DIRECTORY, "sam2.1_hiera_base_plus.pt"
         ),
         "config_path": "sam2_hiera_b+.yaml",
     },
     {
-        "model_name": "Hiera Large",
+        "ai_model_name": "Hiera Large",
         "checkpoint_path": os.path.join(
             settings.MODEL_CHECKPOINT_DIRECTORY, "sam2.1_hiera_large.pt"
         ),
         "config_path": "sam2_hiera_l.yaml",
     },
     {
-        "model_name": "Hiera Small",
+        "ai_model_name": "Hiera Small",
         "checkpoint_path": os.path.join(
             settings.MODEL_CHECKPOINT_DIRECTORY, "sam2.1_hiera_small.pt"
         ),
         "config_path": "sam2_hiera_s.yaml",
     },
     {
-        "model_name": "Hiera Tiny",
+        "ai_model_name": "Hiera Tiny",
         "checkpoint_path": os.path.join(
             settings.MODEL_CHECKPOINT_DIRECTORY, "sam2.1_hiera_tiny.pt"
         ),
