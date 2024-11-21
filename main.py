@@ -113,6 +113,9 @@ def init_redis_structure() -> None:
     except Exception as e:
         print(f"Error creating consumer group: {e}")
         
+    rcli.set("sam2-instances", 0)
+    rcli.set("max-sam2-instances",99999)
+        
 
 
 

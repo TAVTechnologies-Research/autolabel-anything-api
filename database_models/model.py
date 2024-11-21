@@ -23,30 +23,30 @@ DEFAULT_MODELS = [
     {
         "ai_model_name": "Hiera Base Plus",
         "checkpoint_path": os.path.join(
-            settings.MODEL_CHECKPOINT_DIRECTORY, "sam2.1_hiera_base_plus.pt"
+            settings.MODEL_CHECKPOINT_DIRECTORY, "sam2_hiera_base_plus.pt"
         ),
-        "config_path": "sam2.1_hiera_base_plus.yaml",
+        "config_path": "sam2_hiera_b+.yaml",
     },
     {
         "ai_model_name": "Hiera Large",
         "checkpoint_path": os.path.join(
-            settings.MODEL_CHECKPOINT_DIRECTORY, "sam2.1_hiera_large.pt"
+            settings.MODEL_CHECKPOINT_DIRECTORY, "sam2_hiera_large.pt"
         ),
-        "config_path": "sam2.1_hiera_large..yaml",
+        "config_path": "sam2_hiera_l.yaml",
     },
     {
         "ai_model_name": "Hiera Small",
         "checkpoint_path": os.path.join(
-            settings.MODEL_CHECKPOINT_DIRECTORY, "sam2.1_hiera_small.pt"
+            settings.MODEL_CHECKPOINT_DIRECTORY, "sam2_hiera_small.pt"
         ),
-        "config_path": "sam2_hiera_small.yaml",
+        "config_path": "sam2_hiera_s.yaml",
     },
     {
         "ai_model_name": "Hiera Tiny",
         "checkpoint_path": os.path.join(
-            settings.MODEL_CHECKPOINT_DIRECTORY, "sam2.1_hiera_tiny.pt"
+            settings.MODEL_CHECKPOINT_DIRECTORY, "sam2_hiera_tiny.pt"
         ),
-        "config_path": "sam2_hiera_tiny.yaml",
+        "config_path": "sam2_hiera_t.yaml",
     },
 ]
 
